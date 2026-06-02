@@ -130,6 +130,44 @@ st.markdown(
         max-width: 780px;
     }
 
+    .dashboard-hero {
+        background:
+            linear-gradient(135deg, rgba(15, 118, 110, 0.96), rgba(37, 99, 235, 0.92)),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+        border-radius: 8px;
+        padding: 1.35rem 1.45rem;
+        margin-bottom: 1rem;
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .dashboard-hero-title {
+        font-size: 2.15rem;
+        line-height: 1.12;
+        font-weight: 900;
+        margin: 0;
+        color: #ffffff;
+    }
+
+    .dashboard-hero-copy {
+        max-width: 820px;
+        margin-top: 0.45rem;
+        color: rgba(255,255,255,0.88);
+        font-size: 0.98rem;
+    }
+
+    .hero-chip {
+        display: inline-block;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.28);
+        border-radius: 999px;
+        padding: 0.26rem 0.72rem;
+        margin: 0.25rem 0.35rem 0 0;
+        color: #ffffff;
+        font-size: 0.78rem;
+        font-weight: 800;
+    }
+
     .section-title {
         color: var(--med-ink);
         font-size: 1.02rem;
@@ -144,6 +182,11 @@ st.markdown(
         padding: 0.95rem;
         min-height: 104px;
     }
+
+    .metric-tile.accent-teal { border-top: 4px solid #0f766e; }
+    .metric-tile.accent-blue { border-top: 4px solid #2563eb; }
+    .metric-tile.accent-amber { border-top: 4px solid #b54708; }
+    .metric-tile.accent-red { border-top: 4px solid #b42318; }
 
     .metric-label {
         color: var(--med-muted);
@@ -173,6 +216,52 @@ st.markdown(
         border-radius: 8px;
         padding: 1rem;
         margin-bottom: 0.85rem;
+    }
+
+    .workflow-card {
+        background: #ffffff;
+        border: 1px solid var(--med-line);
+        border-radius: 8px;
+        padding: 1rem;
+        min-height: 150px;
+    }
+
+    .workflow-step {
+        color: var(--med-teal);
+        font-size: 0.76rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0;
+    }
+
+    .workflow-title {
+        color: var(--med-ink);
+        font-size: 1rem;
+        font-weight: 850;
+        margin-top: 0.35rem;
+    }
+
+    .workflow-copy {
+        color: var(--med-muted);
+        font-size: 0.86rem;
+        margin-top: 0.35rem;
+        line-height: 1.45;
+    }
+
+    .readiness-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.72rem 0;
+        border-bottom: 1px solid var(--med-line);
+    }
+
+    .readiness-row:last-child { border-bottom: 0; }
+
+    .readiness-label {
+        color: var(--med-ink);
+        font-weight: 760;
     }
 
     .status-pill {
@@ -273,10 +362,11 @@ def page_header(eyebrow: str, title: str, subtitle: str) -> None:
     )
 
 
-def metric_tile(label: str, value, note: str = "") -> None:
+def metric_tile(label: str, value, note: str = "", accent: str = "") -> None:
+    accent_class = f" accent-{accent}" if accent else ""
     st.markdown(
         f"""
-        <div class="metric-tile">
+        <div class="metric-tile{accent_class}">
             <div class="metric-label">{label}</div>
             <div class="metric-value">{value}</div>
             <div class="metric-note">{note}</div>
@@ -296,46 +386,112 @@ def risk_badge(risk: str) -> str:
 
 
 def dashboard(df):
-    page_header(
-        "Operations dashboard",
-        "Healthcare AI workspace",
-        "Monitor report activity, safety alerts, dataset coverage, and clinical-assist usage from one focused view.",
+    st.markdown(
+        """
+        <div class="dashboard-hero">
+            <div class="page-eyebrow" style="color:rgba(255,255,255,0.82);">Operations dashboard</div>
+            <h1 class="dashboard-hero-title">MedExplain command center</h1>
+            <div class="dashboard-hero-copy">
+                A polished clinical AI workspace for analyzing reports, tracking risk signals, reviewing model readiness,
+                and presenting healthcare intelligence in placement demos.
+            </div>
+            <div style="margin-top:0.75rem;">
+                <span class="hero-chip">Privacy-first</span>
+                <span class="hero-chip">Role-based</span>
+                <span class="hero-chip">RAG-ready</span>
+                <span class="hero-chip">Demo-ready</span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     metrics = dashboard_metrics()
+    feedback = feedback_summary()
+    model_report = load_evaluation_report()
+    risk_rows = risk_distribution()
+    recent_rows = list_user_reports(st.session_state["user_id"], limit=5)
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        metric_tile("Reports analyzed", metrics["reports"], "Stored report reviews")
+        metric_tile("Reports analyzed", metrics["reports"], "Stored report reviews", "teal")
     with col2:
-        metric_tile("AI suggestions", metrics["diagnoses"], "Generated candidates")
+        metric_tile("AI suggestions", metrics["diagnoses"], "Generated candidates", "blue")
     with col3:
-        metric_tile("Users served", metrics["users"], "Registered accounts")
+        metric_tile("Avg feedback", feedback["average_rating"], f"{feedback['count']} rating entries", "amber")
     with col4:
-        metric_tile("Critical alerts", metrics["critical"], "Emergency flags")
+        metric_tile("Critical alerts", metrics["critical"], "Emergency flags", "red")
+
+    flow_cols = st.columns(4)
+    steps = [
+        ("01", "Upload or paste report", "PDF and manual text workflows support quick demos and real report review."),
+        ("02", "Extract findings", "Symptoms, conditions, lab values, and abnormality meanings are structured."),
+        ("03", "Generate explanation", "Patient and doctor modes receive different grounded summaries."),
+        ("04", "Track outcomes", "Audit logs, feedback, reports, and metrics support project evaluation."),
+    ]
+    for column, (step, title, copy) in zip(flow_cols, steps):
+        with column:
+            st.markdown(
+                f"""
+                <div class="workflow-card">
+                    <div class="workflow-step">{step}</div>
+                    <div class="workflow-title">{title}</div>
+                    <div class="workflow-copy">{copy}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
     left, right = st.columns([1.25, 0.75], gap="large")
     with left:
         section_title("Dataset intelligence")
         st.plotly_chart(condition_frequency_chart(df), use_container_width=True)
     with right:
-        section_title("System posture")
+        section_title("Risk distribution")
+        st.plotly_chart(risk_distribution_chart(risk_rows), use_container_width=True)
+
+    lower_left, lower_right = st.columns([0.95, 1.05], gap="large")
+    with lower_left:
+        section_title("Platform readiness")
+        model_status = "Ready" if model_report.get("available") else "Pending"
         st.markdown(
-            """
+            f"""
             <div class="insight-panel">
-                <b>Privacy layer</b><br>
-                <span class="muted">Identifiers are redacted before LLM calls.</span>
-            </div>
-            <div class="insight-panel">
-                <b>Clinical safety</b><br>
-                <span class="muted">Emergency red flags are surfaced before analysis.</span>
-            </div>
-            <div class="insight-panel">
-                <b>Evidence flow</b><br>
-                <span class="muted">RAG context is shown when retrieval data is available.</span>
+                <div class="readiness-row">
+                    <span class="readiness-label">Privacy redaction</span>
+                    <span class="status-pill risk-low">Active</span>
+                </div>
+                <div class="readiness-row">
+                    <span class="readiness-label">Emergency detection</span>
+                    <span class="status-pill risk-low">Active</span>
+                </div>
+                <div class="readiness-row">
+                    <span class="readiness-label">Model metrics</span>
+                    <span class="status-pill risk-{'low' if model_report.get('available') else 'elevated'}">{model_status}</span>
+                </div>
+                <div class="readiness-row">
+                    <span class="readiness-label">Demo accounts</span>
+                    <span class="status-pill risk-low">Seeded</span>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
+
+    with lower_right:
+        section_title("Recent activity")
+        if recent_rows:
+            st.dataframe(recent_rows, use_container_width=True)
+        else:
+            st.markdown(
+                """
+                <div class="insight-panel">
+                    <b>No report history yet</b><br>
+                    <span class="muted">Open Analyze Report and use a sample report to populate this dashboard.</span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
 
 def analyze_report(df, vector_db):
