@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import base64
+from pathlib import Path
+
 import streamlit as st
 
 from modules.auth import auth_gate
@@ -241,6 +244,10 @@ st.markdown(
         margin-bottom: 1rem;
         color: #ffffff;
         border: 1px solid rgba(255,255,255,0.2);
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+        gap: 1rem;
+        align-items: center;
     }
 
     .dashboard-hero-title {
@@ -270,6 +277,23 @@ st.markdown(
         font-weight: 800;
     }
 
+    .hero-visual-card {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.22);
+        background: rgba(255,255,255,0.12);
+        box-shadow: 0 18px 38px rgba(2, 6, 23, 0.20);
+        min-height: 245px;
+    }
+
+    .hero-visual-card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 245px;
+        object-fit: cover;
+    }
+
     .login-stage {
         min-height: calc(100vh - 3rem);
         display: grid;
@@ -290,6 +314,7 @@ st.markdown(
         flex-direction: column;
         justify-content: space-between;
         border: 1px solid rgba(255,255,255,0.18);
+        overflow: hidden;
     }
 
     .login-hero h1 {
@@ -314,6 +339,22 @@ st.markdown(
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0.7rem;
         margin-top: 1.2rem;
+    }
+
+    .login-visual {
+        margin-top: 1.2rem;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: 0 18px 34px rgba(2, 6, 23, 0.22);
+        height: 210px;
+    }
+
+    .login-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
 
     .login-stat {
@@ -400,6 +441,7 @@ st.markdown(
     }
 
     @media (max-width: 900px) {
+        .dashboard-hero,
         .login-stage {
             grid-template-columns: 1fr;
         }
@@ -585,6 +627,15 @@ st.markdown(
 init_db()
 
 
+@st.cache_data(show_spinner=False)
+def hero_image_uri() -> str:
+    path = Path("assets/medexplain-hero.png")
+    if not path.exists():
+        return ""
+    data = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:image/png;base64,{data}"
+
+
 @st.cache_resource(show_spinner="Loading medical knowledge index...")
 def get_db():
     return load_vector_db()
@@ -653,8 +704,10 @@ def risk_badge(risk: str) -> str:
 
 
 def login_landing() -> None:
+    visual = hero_image_uri()
+    visual_markup = f'<div class="login-visual"><img src="{visual}" alt="MedExplain AI clinical dashboard visual"></div>' if visual else ""
     st.markdown(
-        """
+        f"""
         <div class="login-stage">
             <div class="login-hero">
                 <div>
@@ -678,6 +731,7 @@ def login_landing() -> None:
                             <div class="login-stat-label">explanation languages</div>
                         </div>
                     </div>
+                    {visual_markup}
                 </div>
                 <div>
                     <span class="hero-chip">NLP extraction</span>
@@ -728,21 +782,26 @@ def login_landing() -> None:
 
 
 def dashboard(df):
+    visual = hero_image_uri()
+    visual_markup = f'<div class="hero-visual-card"><img src="{visual}" alt="MedExplain AI clinical dashboard visual"></div>' if visual else ""
     st.markdown(
-        """
+        f"""
         <div class="dashboard-hero">
-            <div class="page-eyebrow" style="color:rgba(255,255,255,0.82);">Operations dashboard</div>
-            <h1 class="dashboard-hero-title">MedExplain command center</h1>
-            <div class="dashboard-hero-copy">
-                A polished clinical AI workspace for analyzing reports, tracking risk signals, reviewing model readiness,
-                and presenting healthcare intelligence in placement demos.
+            <div>
+                <div class="page-eyebrow" style="color:rgba(255,255,255,0.82);">Operations dashboard</div>
+                <h1 class="dashboard-hero-title">MedExplain command center</h1>
+                <div class="dashboard-hero-copy">
+                    A polished clinical AI workspace for analyzing reports, tracking risk signals, reviewing model readiness,
+                    and presenting healthcare intelligence in placement demos.
+                </div>
+                <div style="margin-top:0.75rem;">
+                    <span class="hero-chip">Privacy-first</span>
+                    <span class="hero-chip">Role-based</span>
+                    <span class="hero-chip">RAG-ready</span>
+                    <span class="hero-chip">Demo-ready</span>
+                </div>
             </div>
-            <div style="margin-top:0.75rem;">
-                <span class="hero-chip">Privacy-first</span>
-                <span class="hero-chip">Role-based</span>
-                <span class="hero-chip">RAG-ready</span>
-                <span class="hero-chip">Demo-ready</span>
-            </div>
+            {visual_markup}
         </div>
         """,
         unsafe_allow_html=True,
