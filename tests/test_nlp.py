@@ -14,7 +14,7 @@ def test_extract_lab_values_and_abnormalities():
     abnormalities = detect_abnormalities(values)
     assert abnormalities["hemoglobin"]["status"] == "LOW"
     assert abnormalities["wbc"]["status"] == "HIGH"
-    assert abnormalities["bp_systolic"] == "HIGH"
+    assert abnormalities["bp_systolic"]["status"] == "HIGH"
 
 
 def test_extract_entities():

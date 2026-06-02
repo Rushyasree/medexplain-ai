@@ -1,0 +1,13 @@
+Patient Name: Demo Patient
+Email: demo@example.com
+Phone: 9876543210
+
+Symptoms: fever, cough, fatigue and sore throat for 3 days.
+
+Lab Report:
+Hemoglobin: 13.2 g/dL
+WBC: 14500 cells/uL
+Platelets: 260000 cells/uL
+CRP: 28 mg/L
+
+Clinical note: Findings may indicate inflammation or infection. Patient should consult a doctor for confirmation.

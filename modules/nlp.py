@@ -3,6 +3,8 @@ from __future__ import annotations
 import re
 from functools import lru_cache
 
+from modules.lab_reference import lab_aliases, load_lab_references
+
 
 SYMPTOMS = {
     "fever",
@@ -19,16 +21,6 @@ SYMPTOMS = {
     "sore throat",
 }
 
-LAB_ALIASES = {
-    "hemoglobin": ["hemoglobin", "hb", "hgb"],
-    "wbc": ["wbc", "white blood cell", "white blood cells"],
-    "platelets": ["platelets", "platelet count"],
-    "crp": ["crp", "c reactive protein", "c-reactive protein"],
-    "glucose": ["glucose", "blood sugar", "blood glucose"],
-    "hba1c": ["hba1c", "hb a1c", "glycated hemoglobin"],
-    "bp_systolic": ["systolic", "bp"],
-}
-
 CONDITIONS = {
     "infection",
     "anemia",
@@ -39,16 +31,6 @@ CONDITIONS = {
     "flu",
     "cold",
 }
-
-NORMAL_RANGES = {
-    "hemoglobin": (12.0, 16.0, "g/dL"),
-    "wbc": (4000.0, 11000.0, "cells/uL"),
-    "platelets": (150000.0, 450000.0, "cells/uL"),
-    "crp": (0.0, 10.0, "mg/L"),
-    "glucose": (70.0, 140.0, "mg/dL"),
-    "hba1c": (4.0, 5.7, "%"),
-}
-
 
 @lru_cache(maxsize=1)
 def _load_biomedical_ner():
@@ -72,7 +54,7 @@ def extract_entities(text: str) -> dict:
     symptoms = {item for item in SYMPTOMS if item in normalized}
     labs = {
         canonical
-        for canonical, aliases in LAB_ALIASES.items()
+        for canonical, aliases in lab_aliases().items()
         if any(alias in normalized for alias in aliases)
     }
     conditions = {item for item in CONDITIONS if item in normalized}
@@ -99,7 +81,7 @@ def extract_lab_values(text: str) -> dict:
     normalized = clean_text(text)
     lab_values: dict[str, float] = {}
 
-    for canonical, aliases in LAB_ALIASES.items():
+    for canonical, aliases in lab_aliases().items():
         alias_pattern = "|".join(re.escape(alias) for alias in aliases)
         pattern = rf"\b({alias_pattern})\b\s*(?:is|=|:|-)?\s*(\d+(?:\.\d+)?)"
         match = re.search(pattern, normalized)
@@ -116,21 +98,25 @@ def extract_lab_values(text: str) -> dict:
 
 def detect_abnormalities(lab_values: dict) -> dict:
     abnormalities = {}
+    references = load_lab_references()
     for test, value in lab_values.items():
-        if test == "bp_systolic":
-            abnormalities[test] = "HIGH" if value >= 140 else "NORMAL"
+        if test not in references:
             continue
-        if test == "bp_diastolic":
-            abnormalities[test] = "HIGH" if value >= 90 else "NORMAL"
-            continue
-        if test not in NORMAL_RANGES:
-            continue
-        low, high, unit = NORMAL_RANGES[test]
+        reference = references[test]
+        low = reference["low"]
+        high = reference["high"]
         if value < low:
             status = "LOW"
+            meaning = reference["meaning_low"]
         elif value > high:
             status = "HIGH"
+            meaning = reference["meaning_high"]
         else:
             status = "NORMAL"
-        abnormalities[test] = {"status": status, "range": f"{low:g}-{high:g} {unit}"}
+            meaning = "Within the configured reference range"
+        abnormalities[test] = {
+            "status": status,
+            "range": f"{low:g}-{high:g} {reference['unit']}",
+            "meaning": meaning,
+        }
     return abnormalities

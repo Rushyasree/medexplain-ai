@@ -1,0 +1,9 @@
+test_name,aliases,low,high,unit,meaning_low,meaning_high
+hemoglobin,"hemoglobin|hb|hgb",12,16,g/dL,May suggest anemia or blood loss,May suggest dehydration or high red blood cell concentration
+wbc,"wbc|white blood cell|white blood cells",4000,11000,cells/uL,May suggest low immunity or bone marrow suppression,May suggest infection inflammation or stress response
+platelets,"platelets|platelet count",150000,450000,cells/uL,May increase bleeding risk,May suggest inflammation infection or clotting risk
+crp,"crp|c reactive protein|c-reactive protein",0,10,mg/L,Usually not clinically concerning,May suggest inflammation or infection
+glucose,"glucose|blood sugar|blood glucose",70,140,mg/dL,May suggest hypoglycemia,May suggest diabetes risk or poor glucose control
+hba1c,"hba1c|hb a1c|glycated hemoglobin",4,5.7,%,Usually not clinically concerning,May suggest prediabetes or diabetes risk
+bp_systolic,"systolic|bp systolic",90,140,mmHg,May suggest low blood pressure,May suggest hypertension risk
+bp_diastolic,"diastolic|bp diastolic",60,90,mmHg,May suggest low blood pressure,May suggest hypertension risk

@@ -15,6 +15,8 @@ Placement-specific talking points are available in [PLACEMENT_BRIEF.md](PLACEMEN
 - SQLAlchemy database models for users, reports, diagnoses, feedback, and audit logs
 - PDF report parsing with file size and encryption checks
 - Structured extraction for symptoms, conditions, lab values, and abnormalities
+- Curated lab reference range dataset for explainable abnormality detection
+- Sample reports for quick demonstrations
 - Confidence-ranked dataset recommendations
 - Persistent FAISS RAG index support
 - Patient-friendly and doctor-facing Gemini explanations
@@ -93,3 +95,11 @@ python scripts/evaluate_model.py
 ```
 
 The admin console will display generated metrics from `artifacts/evaluation_report.json`.
+
+## Demo Sample Reports
+
+Use the files in `data/sample_reports/` for fast demos:
+
+- `cbc_infection_report.txt`
+- `diabetes_risk_report.txt`
+- `anemia_report.txt`

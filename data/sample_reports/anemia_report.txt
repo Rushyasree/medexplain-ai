@@ -1,0 +1,11 @@
+Patient Name: Demo Patient
+
+Symptoms: weakness, dizziness, fatigue and headache.
+
+Lab Report:
+Hemoglobin: 9.8 g/dL
+WBC: 7600 cells/uL
+Platelets: 210000 cells/uL
+CRP: 4 mg/L
+
+Clinical note: Low hemoglobin may suggest anemia. Further evaluation by a clinician is recommended.

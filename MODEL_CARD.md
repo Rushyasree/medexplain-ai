@@ -40,6 +40,7 @@ The baseline evaluator trains a TF-IDF + balanced Logistic Regression classifier
 - Some labels are broad, such as `multiple conditions`.
 - Predictions are not clinically validated.
 - Lab interpretation uses simplified reference ranges.
+- Reference ranges are configurable through `data/lab_reference_ranges.csv`.
 - LLM explanations depend on prompt quality and retrieved context.
 
 ## Safety Controls

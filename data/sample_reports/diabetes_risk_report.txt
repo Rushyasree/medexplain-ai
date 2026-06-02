@@ -1,0 +1,11 @@
+Patient Name: Demo Patient
+
+Symptoms: fatigue, frequent thirst and headache.
+
+Lab Report:
+Glucose: 186 mg/dL
+HbA1c: 7.1 %
+BP: 146/94 mmHg
+BMI: 31
+
+Clinical note: Values may suggest increased diabetes and hypertension risk. Professional medical review is recommended.
