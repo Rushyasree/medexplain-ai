@@ -168,6 +168,147 @@ st.markdown(
         font-weight: 800;
     }
 
+    .login-stage {
+        min-height: calc(100vh - 3rem);
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .login-hero {
+        background:
+            linear-gradient(135deg, rgba(20, 33, 61, 0.96), rgba(15, 118, 110, 0.92)),
+            linear-gradient(180deg, rgba(37, 99, 235, 0.34), rgba(255, 255, 255, 0));
+        color: #ffffff;
+        border-radius: 8px;
+        padding: 2rem;
+        min-height: 520px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .login-hero h1 {
+        color: #ffffff;
+        font-size: 3rem;
+        line-height: 1.05;
+        font-weight: 900;
+        margin: 0.4rem 0 0 0;
+        max-width: 760px;
+    }
+
+    .login-hero p {
+        color: rgba(255,255,255,0.86);
+        font-size: 1rem;
+        max-width: 680px;
+        margin-top: 0.85rem;
+        line-height: 1.55;
+    }
+
+    .login-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.7rem;
+        margin-top: 1.2rem;
+    }
+
+    .login-stat {
+        background: rgba(255,255,255,0.13);
+        border: 1px solid rgba(255,255,255,0.22);
+        border-radius: 8px;
+        padding: 0.85rem;
+    }
+
+    .login-stat-value {
+        color: #ffffff;
+        font-size: 1.45rem;
+        font-weight: 900;
+    }
+
+    .login-stat-label {
+        color: rgba(255,255,255,0.76);
+        font-size: 0.78rem;
+        margin-top: 0.2rem;
+    }
+
+    .login-panel {
+        background: #ffffff;
+        border: 1px solid var(--med-line);
+        border-radius: 8px;
+        padding: 1.35rem;
+        min-height: 520px;
+    }
+
+    .feature-list {
+        display: grid;
+        gap: 0.7rem;
+        margin-top: 1rem;
+    }
+
+    .feature-item {
+        border: 1px solid var(--med-line);
+        border-radius: 8px;
+        padding: 0.9rem;
+        background: #fbfdff;
+    }
+
+    .feature-title {
+        color: var(--med-ink);
+        font-weight: 850;
+        font-size: 0.95rem;
+    }
+
+    .feature-copy {
+        color: var(--med-muted);
+        font-size: 0.84rem;
+        margin-top: 0.2rem;
+        line-height: 1.42;
+    }
+
+    .demo-strip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.7rem;
+        margin-top: 1rem;
+    }
+
+    .demo-card {
+        border-radius: 8px;
+        border: 1px solid var(--med-line);
+        padding: 0.8rem;
+        background: #ffffff;
+    }
+
+    .demo-role {
+        color: var(--med-teal);
+        font-size: 0.75rem;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .demo-login {
+        color: var(--med-ink);
+        font-size: 0.84rem;
+        font-weight: 760;
+        margin-top: 0.25rem;
+        overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 900px) {
+        .login-stage {
+            grid-template-columns: 1fr;
+        }
+        .login-grid,
+        .demo-strip {
+            grid-template-columns: 1fr;
+        }
+        .login-hero h1 {
+            font-size: 2.15rem;
+        }
+    }
+
     .section-title {
         color: var(--med-ink);
         font-size: 1.02rem;
@@ -323,6 +464,12 @@ st.markdown(
     textarea, input, select {
         border-radius: 8px !important;
     }
+
+    div[data-baseweb="input"] > div,
+    div[data-baseweb="textarea"] > div {
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -383,6 +530,81 @@ def section_title(title: str) -> None:
 def risk_badge(risk: str) -> str:
     normalized = risk or "low"
     return f'<span class="status-pill risk-{normalized}">{normalized.title()}</span>'
+
+
+def login_landing() -> None:
+    st.markdown(
+        """
+        <div class="login-stage">
+            <div class="login-hero">
+                <div>
+                    <div class="page-eyebrow" style="color:rgba(255,255,255,0.82);">Healthcare AI platform</div>
+                    <h1>Explain medical reports with clarity, evidence, and safety.</h1>
+                    <p>
+                        MedExplain AI turns report text, PDF findings, lab values, and clinical signals into
+                        patient-friendly explanations and doctor-oriented summaries with privacy-aware AI workflows.
+                    </p>
+                    <div class="login-grid">
+                        <div class="login-stat">
+                            <div class="login-stat-value">8K+</div>
+                            <div class="login-stat-label">medical rows processed</div>
+                        </div>
+                        <div class="login-stat">
+                            <div class="login-stat-value">3</div>
+                            <div class="login-stat-label">role-based workspaces</div>
+                        </div>
+                        <div class="login-stat">
+                            <div class="login-stat-value">4</div>
+                            <div class="login-stat-label">explanation languages</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span class="hero-chip">NLP extraction</span>
+                    <span class="hero-chip">Lab abnormality detection</span>
+                    <span class="hero-chip">RAG evidence</span>
+                    <span class="hero-chip">Admin analytics</span>
+                </div>
+            </div>
+            <div class="login-panel">
+                <div class="page-eyebrow">Demo access</div>
+                <h2 style="margin:0;color:#14213d;">Start with a demo account</h2>
+                <p class="page-subtitle" style="margin-bottom:1rem;">
+                    Use the sidebar to log in. The accounts below are seeded for quick placement demos.
+                </p>
+                <div class="demo-strip">
+                    <div class="demo-card">
+                        <div class="demo-role">Patient</div>
+                        <div class="demo-login">patient_demo<br>Patient@123</div>
+                    </div>
+                    <div class="demo-card">
+                        <div class="demo-role">Doctor</div>
+                        <div class="demo-login">doctor_demo<br>Doctor@123</div>
+                    </div>
+                    <div class="demo-card">
+                        <div class="demo-role">Admin</div>
+                        <div class="demo-login">admin_demo<br>Admin@123</div>
+                    </div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-title">Analyze reports in seconds</div>
+                        <div class="feature-copy">Upload a PDF or paste sample report text to extract symptoms, labs, risk signals, and explanations.</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Designed for placement demos</div>
+                        <div class="feature-copy">Includes sample reports, model card, FastAPI skeleton, Docker, Render config, and admin console.</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Responsible AI built in</div>
+                        <div class="feature-copy">Privacy redaction, emergency detection, audit logs, confidence ranking, and medical disclaimers are included.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def dashboard(df):
@@ -759,6 +981,7 @@ def admin_notes():
 def main():
     sidebar_brand()
     if not auth_gate():
+        login_landing()
         return
 
     df = load_dataset()

@@ -18,14 +18,15 @@ def _set_session(user: User) -> None:
 
 
 def register_panel() -> None:
-    st.sidebar.subheader("Create account")
+    st.sidebar.markdown("### Create account")
+    st.sidebar.caption("Create a role-based workspace for patient, doctor, or admin demos.")
     username = st.sidebar.text_input("Username", key="register_username")
     full_name = st.sidebar.text_input("Full name", key="register_full_name")
     password = st.sidebar.text_input("Password", type="password", key="register_password")
     role = st.sidebar.selectbox("Role", VALID_ROLES, key="register_role")
     consent = st.sidebar.checkbox("I consent to storing report analysis data")
 
-    if st.sidebar.button("Register", type="primary"):
+    if st.sidebar.button("Register", type="primary", use_container_width=True):
         if not username or not password:
             st.sidebar.error("Username and password are required.")
             return
@@ -57,11 +58,22 @@ def register_panel() -> None:
 
 
 def login_panel() -> None:
-    st.sidebar.subheader("Login")
+    st.sidebar.markdown("### Login")
+    st.sidebar.caption("Use a demo account or your registered workspace.")
     username = st.sidebar.text_input("Username", key="login_username")
     password = st.sidebar.text_input("Password", type="password", key="login_password")
 
-    if st.sidebar.button("Login", type="primary"):
+    st.sidebar.markdown(
+        """
+        <div style="font-size:0.82rem;color:#5f6b7a;margin:0.25rem 0 0.75rem 0;">
+            Demo: <b>patient_demo</b> / <b>Patient@123</b><br>
+            Doctor: <b>doctor_demo</b> / <b>Doctor@123</b>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    if st.sidebar.button("Login", type="primary", use_container_width=True):
         with session_scope() as session:
             user = session.query(User).filter(User.username == username).first()
             if not user or not verify_password(password, user.password_hash):
@@ -82,7 +94,7 @@ def auth_gate() -> bool:
         role = st.session_state.get("role", "patient")
         username = st.session_state.get("username", "user")
         st.sidebar.success(f"{username} · {role.title()}")
-        if st.sidebar.button("Logout"):
+        if st.sidebar.button("Logout", use_container_width=True):
             log_audit("user_logged_out", st.session_state.get("user_id"))
             st.session_state.clear()
             st.rerun()
@@ -93,5 +105,4 @@ def auth_gate() -> bool:
         register_panel()
     else:
         login_panel()
-    st.info("Please log in to continue.")
     return False
