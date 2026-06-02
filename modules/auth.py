@@ -65,9 +65,18 @@ def login_panel() -> None:
 
     st.sidebar.markdown(
         """
-        <div style="font-size:0.82rem;color:#5f6b7a;margin:0.25rem 0 0.75rem 0;">
-            Demo: <b>patient_demo</b> / <b>Patient@123</b><br>
-            Doctor: <b>doctor_demo</b> / <b>Doctor@123</b>
+        <div style="
+            font-size:0.80rem;
+            color:rgba(255,255,255,0.82);
+            margin:0.45rem 0 0.85rem 0;
+            padding:0.7rem;
+            border-radius:8px;
+            border:1px solid rgba(255,255,255,0.16);
+            background:rgba(255,255,255,0.10);
+            line-height:1.45;">
+            <b style="color:#ffffff;">Demo credentials</b><br>
+            Patient: <b style="color:#ffffff;">patient_demo</b> / <b style="color:#ffffff;">Patient@123</b><br>
+            Doctor: <b style="color:#ffffff;">doctor_demo</b> / <b style="color:#ffffff;">Doctor@123</b>
         </div>
         """,
         unsafe_allow_html=True,

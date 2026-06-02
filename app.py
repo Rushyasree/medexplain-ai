@@ -33,7 +33,7 @@ st.markdown(
     """
     <style>
     :root {
-        --med-bg: #f7fafc;
+        --med-bg: #eef6f7;
         --med-panel: #ffffff;
         --med-ink: #14213d;
         --med-muted: #5f6b7a;
@@ -45,7 +45,10 @@ st.markdown(
     }
 
     .stApp {
-        background: var(--med-bg);
+        background:
+            radial-gradient(circle at top left, rgba(15, 118, 110, 0.13), transparent 28rem),
+            radial-gradient(circle at 78% 18%, rgba(37, 99, 235, 0.10), transparent 24rem),
+            linear-gradient(180deg, #f8fbfc 0%, #eef6f7 100%);
         color: var(--med-ink);
     }
 
@@ -56,20 +59,39 @@ st.markdown(
     }
 
     [data-testid="stSidebar"] {
-        background: #ffffff;
-        border-right: 1px solid var(--med-line);
+        background:
+            linear-gradient(180deg, #0b3142 0%, #0f766e 48%, #123b5d 100%);
+        border-right: 0;
+        box-shadow: 10px 0 28px rgba(15, 23, 42, 0.10);
+    }
+
+    [data-testid="stSidebar"] [data-testid="stSidebarContent"] {
+        padding-top: 1rem;
     }
 
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3 {
-        color: var(--med-ink);
+        color: #ffffff;
+    }
+
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] span {
+        color: rgba(255,255,255,0.90);
+    }
+
+    [data-testid="stSidebar"] small {
+        color: rgba(255,255,255,0.72);
     }
 
     .app-brand {
-        padding: 0.35rem 0 1rem 0;
-        border-bottom: 1px solid var(--med-line);
+        padding: 0.85rem;
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 8px;
         margin-bottom: 1rem;
+        background: rgba(255,255,255,0.10);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
     }
 
     .brand-mark {
@@ -79,8 +101,8 @@ st.markdown(
         width: 36px;
         height: 36px;
         border-radius: 8px;
-        background: #0f766e;
-        color: white;
+        background: #ffffff;
+        color: #0f766e;
         font-weight: 800;
         margin-right: 0.5rem;
     }
@@ -88,22 +110,102 @@ st.markdown(
     .brand-title {
         font-size: 1.08rem;
         font-weight: 800;
-        color: var(--med-ink);
+        color: #ffffff;
     }
 
     .brand-subtitle {
         display: block;
-        color: var(--med-muted);
+        color: rgba(255,255,255,0.72);
         font-size: 0.78rem;
         margin-top: 0.15rem;
     }
 
-    .page-shell {
+    .sidebar-mini-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.45rem;
+        margin-top: 0.85rem;
+    }
+
+    .sidebar-mini {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.16);
+        border-radius: 8px;
+        padding: 0.55rem;
+    }
+
+    .sidebar-mini-value {
+        color: #ffffff;
+        font-weight: 900;
+        font-size: 1rem;
+        line-height: 1.1;
+    }
+
+    .sidebar-mini-label {
+        color: rgba(255,255,255,0.70);
+        font-size: 0.68rem;
+        margin-top: 0.15rem;
+    }
+
+    .sidebar-note {
+        margin-top: 0.75rem;
+        padding: 0.7rem;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.78);
+        font-size: 0.78rem;
+        line-height: 1.35;
+    }
+
+    [data-testid="stSidebar"] div[role="radiogroup"] {
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.16);
+        border-radius: 8px;
+        padding: 0.35rem;
+    }
+
+    [data-testid="stSidebar"] div[role="radiogroup"] label {
+        border-radius: 8px;
+        padding: 0.25rem 0.35rem;
+    }
+
+    [data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+        background: rgba(255,255,255,0.10);
+    }
+
+    [data-testid="stSidebar"] input,
+    [data-testid="stSidebar"] textarea {
+        color: #0f172a !important;
+    }
+
+    [data-testid="stSidebar"] div[data-baseweb="input"] > div,
+    [data-testid="stSidebar"] div[data-baseweb="select"] > div {
+        background: rgba(255,255,255,0.96);
+        border: 1px solid rgba(255,255,255,0.44);
+        border-radius: 8px;
+    }
+
+    [data-testid="stSidebar"] div[data-testid="stButton"] > button {
         background: #ffffff;
-        border: 1px solid var(--med-line);
+        color: #0f766e;
+        border: 0;
+        box-shadow: 0 8px 18px rgba(2, 6, 23, 0.18);
+    }
+
+    [data-testid="stSidebar"] div[data-testid="stButton"] > button:hover {
+        background: #e9fffb;
+        color: #0b5f58;
+        border: 0;
+    }
+
+    .page-shell {
+        background: rgba(255,255,255,0.88);
+        border: 1px solid rgba(219,229,238,0.9);
         border-radius: 8px;
         padding: 1.1rem 1.2rem;
         margin-bottom: 1rem;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.045);
     }
 
     .page-eyebrow {
@@ -239,6 +341,7 @@ st.markdown(
         border-radius: 8px;
         padding: 1.35rem;
         min-height: 520px;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
     }
 
     .feature-list {
@@ -322,6 +425,7 @@ st.markdown(
         border-radius: 8px;
         padding: 0.95rem;
         min-height: 104px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.045);
     }
 
     .metric-tile.accent-teal { border-top: 4px solid #0f766e; }
@@ -357,6 +461,7 @@ st.markdown(
         border-radius: 8px;
         padding: 1rem;
         margin-bottom: 0.85rem;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
     }
 
     .workflow-card {
@@ -365,6 +470,7 @@ st.markdown(
         border-radius: 8px;
         padding: 1rem;
         min-height: 150px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
     }
 
     .workflow-step {
@@ -455,6 +561,7 @@ st.markdown(
         border-radius: 8px;
         min-height: 42px;
         font-weight: 750;
+        border: 1px solid #0f766e;
     }
 
     div[data-testid="stTabs"] button {
@@ -490,6 +597,19 @@ def sidebar_brand() -> None:
             <span class="brand-mark">M+</span>
             <span class="brand-title">MedExplain AI</span>
             <span class="brand-subtitle">Clinical report intelligence</span>
+            <div class="sidebar-mini-grid">
+                <div class="sidebar-mini">
+                    <div class="sidebar-mini-value">AI</div>
+                    <div class="sidebar-mini-label">report explain</div>
+                </div>
+                <div class="sidebar-mini">
+                    <div class="sidebar-mini-value">RAG</div>
+                    <div class="sidebar-mini-label">evidence flow</div>
+                </div>
+            </div>
+            <div class="sidebar-note">
+                Secure patient, doctor, and admin workflows for placement-ready healthcare AI demos.
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
