@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 from modules.rag import load_vector_db
 
 

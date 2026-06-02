@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 import pandas as pd
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, top_k_accuracy_score
