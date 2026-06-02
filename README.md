@@ -86,6 +86,16 @@ uvicorn api.main:app --reload
 
 Open Swagger docs at `http://localhost:8000/docs`.
 
+## Deploy On Render
+
+This repo includes Render-ready files:
+
+- `render.yaml`
+- `Dockerfile.render`
+- `requirements-render.txt`
+
+In Render, create a Blueprint from `Rushyasree/medexplain-ai`, set `GEMINI_API_KEY`, and deploy. See [DEPLOYMENT.md](DEPLOYMENT.md) for details.
+
 ## Generate Model Metrics
 
 Run the baseline evaluator before demos:
